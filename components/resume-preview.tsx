@@ -55,7 +55,7 @@ export const ResumePreview = forwardRef<HTMLDivElement>((_props, ref) => {
       }}
     >
       {/* Header */}
-      <header className="mb-4 pb-2 border-b border-gray-800">
+      <header className="mb-4 pb-2">
         <h1 className="text-lg font-bold text-center mb-1.5 tracking-tight text-gray-900">
           {personalInfo.fullName || "Your Name"}
         </h1>
