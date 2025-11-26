@@ -125,12 +125,15 @@ export const ResumePreview = forwardRef<HTMLDivElement>((_props, ref) => {
                   </span>
                 </div>
                 <ul className="text-[10px] leading-relaxed text-gray-800 space-y-0.5">
-                  {exp.description.split('\n').filter(line => line.trim()).map((line, idx) => (
-                    <li key={idx} className="flex gap-1.5">
-                      <span className="text-gray-900">•</span>
-                      <span className="flex-1">{line.trim()}</span>
-                    </li>
-                  ))}
+                  {exp.description
+                    .split("\n")
+                    .filter((line) => line.trim())
+                    .map((line, idx) => (
+                      <li key={idx} className="flex gap-1.5">
+                        <span className="text-gray-900">•</span>
+                        <span className="flex-1">{line.trim()}</span>
+                      </li>
+                    ))}
                 </ul>
               </div>
             ))}

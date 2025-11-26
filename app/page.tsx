@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { ResumeProvider } from "@/lib/resume-context";
+import { ResumeProvider, useResume } from "@/lib/resume-context";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { ResumePreview } from "@/components/resume-preview";
@@ -18,13 +18,12 @@ import { motion } from "framer-motion";
 function ResumeBuilderContent() {
   const resumeRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const { resumeData } = useResume();
 
   const handleDownloadPDF = async () => {
-    if (!resumeRef.current) return;
-
     setIsDownloading(true);
     try {
-      await exportToPDF(resumeRef.current, "my-resume.pdf");
+      await exportToPDF(resumeData, "my-resume.pdf");
     } catch (error) {
       console.error("PDF generation failed:", error);
     } finally {
