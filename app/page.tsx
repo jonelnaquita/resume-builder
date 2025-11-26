@@ -14,6 +14,7 @@ import { CertificationsForm } from "@/components/forms/certifications-form";
 import { exportToPDF } from "@/lib/pdf-export";
 import { Download, FileText, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { Footer } from "@/components/footer";
 
 function ResumeBuilderContent() {
   const resumeRef = useRef<HTMLDivElement>(null);
@@ -32,7 +33,7 @@ function ResumeBuilderContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-purple-50/20 to-pink-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-purple-50/20 to-pink-50/30 flex flex-col">
       {/* Header */}
       <motion.header
         initial={{ opacity: 0, y: -20 }}
@@ -171,6 +172,9 @@ function ResumeBuilderContent() {
           </motion.div>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
