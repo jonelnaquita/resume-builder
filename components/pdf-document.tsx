@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   },
   summaryText: {
     fontSize: 10,
-    lineHeight: 1.5,
+    lineHeight: 1.25,
     color: "#1f2937",
   },
   experienceItem: {
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   bulletText: {
     flex: 1,
     fontSize: 10,
-    lineHeight: 1.5,
+    lineHeight: 1.25,
     color: "#1f2937",
   },
   educationItem: {
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   projectDescription: {
     fontSize: 10,
-    lineHeight: 1.5,
+    lineHeight: 1.25,
     color: "#1f2937",
   },
   projectLink: {

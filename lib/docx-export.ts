@@ -103,7 +103,7 @@ export async function exportToDOCX(
       sections.push(
         new Paragraph({
           text: personalInfo.summary,
-          spacing: { after: 200 },
+          spacing: { after: 200, line: 240 },
         })
       );
     }
@@ -182,7 +182,7 @@ export async function exportToDOCX(
               bullet: {
                 level: 0,
               },
-              spacing: { after: 50 },
+              spacing: { after: 50, line: 240 },
             })
           );
         });
@@ -378,7 +378,7 @@ export async function exportToDOCX(
         sections.push(
           new Paragraph({
             text: project.description,
-            spacing: { after: 50 },
+            spacing: { after: 50, line: 240 },
           })
         );
 
