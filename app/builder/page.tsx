@@ -60,42 +60,42 @@ function BuilderContent() {
         transition={{ duration: 0.5 }}
         className="sticky top-0 z-50 no-print backdrop-blur-md bg-white/80"
       >
-        <div className="container mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+        <div className="container mx-auto px-4 md:px-6 py-4 md:py-6">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
               <Button
                 onClick={handleBackToHome}
                 variant="ghost"
                 size="icon"
-                className="hover:bg-gray-100"
+                className="hover:bg-gray-100 flex-shrink-0"
               >
-                <ArrowLeft className="w-5 h-5 text-gray-700" />
+                <ArrowLeft className="w-4 h-4 md:w-5 md:h-5 text-gray-700" />
               </Button>
-              <FileText className="w-7 h-7 text-blue-600" />
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">
+              <FileText className="w-5 h-5 md:w-7 md:h-7 text-blue-600 flex-shrink-0" />
+              <div className="min-w-0">
+                <h1 className="text-lg md:text-2xl font-bold text-gray-900 truncate">
                   Resume Builder
                 </h1>
-                <p className="text-xs text-gray-500 mt-0.5">
+                <p className="text-xs text-gray-500 mt-0.5 hidden sm:block">
                   Create your professional resume
                 </p>
               </div>
             </div>
-            <div className="flex gap-3">
+            <div className="flex gap-2 flex-shrink-0">
               <Button
                 onClick={handleDownloadPDF}
                 disabled={isDownloadingPDF}
-                size="lg"
-                className="gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/30 transition-all hover:shadow-xl hover:shadow-blue-600/40 disabled:opacity-50"
+                size="default"
+                className="gap-1 md:gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/30 transition-all hover:shadow-xl hover:shadow-blue-600/40 disabled:opacity-50 text-xs md:text-sm px-3 md:px-4"
               >
                 {isDownloadingPDF ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Generating...
+                    <Loader2 className="w-3 h-3 md:w-4 md:h-4 animate-spin" />
+                    <span className="hidden sm:inline">Generating...</span>
                   </>
                 ) : (
                   <>
-                    <Download className="w-4 h-4" />
+                    <Download className="w-3 h-3 md:w-4 md:h-4" />
                     PDF
                   </>
                 )}
@@ -103,17 +103,17 @@ function BuilderContent() {
               <Button
                 onClick={handleDownloadDOCX}
                 disabled={isDownloadingDOCX}
-                size="lg"
-                className="gap-2 bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-600/30 transition-all hover:shadow-xl hover:shadow-green-600/40 disabled:opacity-50"
+                size="default"
+                className="gap-1 md:gap-2 bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-600/30 transition-all hover:shadow-xl hover:shadow-green-600/40 disabled:opacity-50 text-xs md:text-sm px-3 md:px-4"
               >
                 {isDownloadingDOCX ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Generating...
+                    <Loader2 className="w-3 h-3 md:w-4 md:h-4 animate-spin" />
+                    <span className="hidden sm:inline">Generating...</span>
                   </>
                 ) : (
                   <>
-                    <FileDown className="w-4 h-4" />
+                    <FileDown className="w-3 h-3 md:w-4 md:h-4" />
                     DOCX
                   </>
                 )}
@@ -124,8 +124,8 @@ function BuilderContent() {
       </motion.header>
 
       {/* Main Content - Two Panel Layout */}
-      <div className="container mx-auto px-6 py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+      <div className="container mx-auto px-4 md:px-6 py-6 md:py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
           {/* Left Panel - Form */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -174,7 +174,7 @@ function BuilderContent() {
                   </TabsTrigger>
                 </TabsList>
 
-                <div className="p-6 max-h-[calc(100vh-250px)] overflow-y-auto">
+                <div className="p-4 md:p-6 max-h-[calc(100vh-250px)] overflow-y-auto">
                   <TabsContent value="personal" className="mt-0">
                     <PersonalInfoForm />
                   </TabsContent>
@@ -210,17 +210,19 @@ function BuilderContent() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="lg:sticky lg:top-24 h-fit"
           >
-            <div className="bg-gray-50 rounded-xl p-6 overflow-auto max-h-[calc(100vh-120px)] border border-gray-200 no-print">
+            <div className="bg-gray-50 rounded-xl p-4 md:p-6 overflow-x-auto overflow-y-auto max-h-[calc(100vh-120px)] border border-gray-200">
               <div className="mb-4 no-print">
                 <h3 className="text-sm font-medium text-gray-600 flex items-center gap-2">
                   <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                   Live Preview
                 </h3>
               </div>
-            </div>
-            {/* Resume Preview Container - visible in print */}
-            <div className="flex justify-center resume-preview-container">
-              <ResumePreview ref={resumeRef} />
+              {/* Resume Preview Container */}
+              <div className="flex justify-center">
+                <div className="transform scale-[0.4] md:scale-[0.5] lg:scale-[0.6] xl:scale-75 origin-top">
+                  <ResumePreview ref={resumeRef} />
+                </div>
+              </div>
             </div>
           </motion.div>
         </div>
