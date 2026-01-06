@@ -55,11 +55,11 @@ export const ResumePreview = forwardRef<HTMLDivElement>((_props, ref) => {
       }}
     >
       {/* Header */}
-      <header className="mb-4 pb-2">
-        <h1 className="text-lg font-bold text-center mb-1.5 tracking-tight text-gray-900">
+      <header className="mb-3 pb-1.5">
+        <h1 className="text-base font-bold text-center mb-1 tracking-tight text-gray-900">
           {personalInfo.fullName || "Your Name"}
         </h1>
-        <div className="text-center text-[10px] space-y-0.5 text-gray-700">
+        <div className="text-center text-[9px] space-y-0.5 text-gray-700">
           <div className="flex justify-center items-center gap-2 flex-wrap">
             {personalInfo.email && (
               <span className="font-medium">{personalInfo.email}</span>
@@ -89,11 +89,11 @@ export const ResumePreview = forwardRef<HTMLDivElement>((_props, ref) => {
 
       {/* Professional Summary */}
       {personalInfo.summary && (
-        <section className="mb-3.5">
-          <h2 className="text-[11px] font-bold border-b border-gray-800 pb-0.5 mb-1.5 uppercase tracking-wider text-gray-900">
+        <section className="mb-2.5">
+          <h2 className="text-[10px] font-bold border-b border-gray-800 pb-0.5 mb-1 uppercase tracking-wider text-gray-900">
             Professional Summary
           </h2>
-          <p className="text-[10px] leading-relaxed text-gray-800">
+          <p className="text-[10px] leading-tight text-gray-800">
             {personalInfo.summary}
           </p>
         </section>
@@ -101,11 +101,11 @@ export const ResumePreview = forwardRef<HTMLDivElement>((_props, ref) => {
 
       {/* Experience */}
       {experience.length > 0 && (
-        <section className="mb-3.5">
-          <h2 className="text-[11px] font-bold border-b border-gray-800 pb-0.5 mb-1.5 uppercase tracking-wider text-gray-900">
+        <section className="mb-2.5">
+          <h2 className="text-[10px] font-bold border-b border-gray-800 pb-0.5 mb-1 uppercase tracking-wider text-gray-900">
             Experience
           </h2>
-          <div className="space-y-2.5">
+          <div className="space-y-2">
             {experience.map((exp) => (
               <div key={exp.id}>
                 <div className="flex justify-between items-baseline mb-0.5">
@@ -124,7 +124,7 @@ export const ResumePreview = forwardRef<HTMLDivElement>((_props, ref) => {
                     {exp.location}
                   </span>
                 </div>
-                <ul className="text-[10px] leading-relaxed text-gray-800 space-y-0.5">
+                <ul className="text-[10px] leading-tight text-gray-800 space-y-0.5">
                   {exp.description
                     .split("\n")
                     .filter((line) => line.trim())
@@ -143,11 +143,11 @@ export const ResumePreview = forwardRef<HTMLDivElement>((_props, ref) => {
 
       {/* Education */}
       {education.length > 0 && (
-        <section className="mb-3.5">
-          <h2 className="text-[11px] font-bold border-b border-gray-800 pb-0.5 mb-1.5 uppercase tracking-wider text-gray-900">
+        <section className="mb-2.5">
+          <h2 className="text-[10px] font-bold border-b border-gray-800 pb-0.5 mb-1 uppercase tracking-wider text-gray-900">
             Education
           </h2>
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             {education.map((edu) => (
               <div key={edu.id}>
                 <div className="flex justify-between items-baseline mb-0.5">
@@ -179,11 +179,11 @@ export const ResumePreview = forwardRef<HTMLDivElement>((_props, ref) => {
 
       {/* Skills */}
       {skills.length > 0 && (
-        <section className="mb-3.5">
-          <h2 className="text-[11px] font-bold border-b border-gray-800 pb-0.5 mb-1.5 uppercase tracking-wider text-gray-900">
+        <section className="mb-2.5">
+          <h2 className="text-[10px] font-bold border-b border-gray-800 pb-0.5 mb-1 uppercase tracking-wider text-gray-900">
             Skills
           </h2>
-          <div className="space-y-1">
+          <div className="space-y-0.5">
             {skills.map((skill) => (
               <div key={skill.id} className="text-[10px] text-gray-800">
                 <span className="font-bold text-gray-900">
@@ -198,11 +198,11 @@ export const ResumePreview = forwardRef<HTMLDivElement>((_props, ref) => {
 
       {/* Projects */}
       {projects.length > 0 && (
-        <section className="mb-3.5">
-          <h2 className="text-[11px] font-bold border-b border-gray-800 pb-0.5 mb-1.5 uppercase tracking-wider text-gray-900">
+        <section className="mb-2.5">
+          <h2 className="text-[10px] font-bold border-b border-gray-800 pb-0.5 mb-1 uppercase tracking-wider text-gray-900">
             Projects
           </h2>
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             {projects.map((project) => (
               <div key={project.id}>
                 <div className="flex justify-between items-baseline mb-0.5">
@@ -219,7 +219,7 @@ export const ResumePreview = forwardRef<HTMLDivElement>((_props, ref) => {
                   </span>{" "}
                   {project.technologies}
                 </div>
-                <p className="text-[10px] leading-relaxed text-gray-800">
+                <p className="text-[10px] leading-tight text-gray-800">
                   {project.description}
                 </p>
                 {project.link && (
@@ -235,11 +235,11 @@ export const ResumePreview = forwardRef<HTMLDivElement>((_props, ref) => {
 
       {/* Certifications */}
       {certifications.length > 0 && (
-        <section className="mb-3.5">
-          <h2 className="text-[11px] font-bold border-b border-gray-800 pb-0.5 mb-1.5 uppercase tracking-wider text-gray-900">
+        <section className="mb-2.5">
+          <h2 className="text-[10px] font-bold border-b border-gray-800 pb-0.5 mb-1 uppercase tracking-wider text-gray-900">
             Certifications
           </h2>
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             {certifications.map((cert) => (
               <div key={cert.id} className="text-[10px]">
                 <div className="flex justify-between items-baseline mb-0.5">
