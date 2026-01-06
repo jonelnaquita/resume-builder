@@ -51,7 +51,7 @@ export const ResumePreview = forwardRef<HTMLDivElement>((_props, ref) => {
       style={{
         width: "210mm",
         maxHeight: "297mm",
-        padding: "12mm 15mm",
+        padding: "11mm 14mm",
       }}
     >
       {/* Header */}

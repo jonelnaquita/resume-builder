@@ -57,14 +57,15 @@ export function DocumentUpload({ onComplete, onBack }: DocumentUploadProps) {
   }, []);
 
   const handleFile = (file: File) => {
-    // Validate file type - Images only
+    // Validate file type - PDF and Images
     const validTypes = [
+      "application/pdf",
       "image/jpeg",
       "image/jpg",
       "image/png",
     ];
     if (!validTypes.includes(file.type)) {
-      setError("Please upload a JPEG or PNG file.");
+      setError("Please upload a PDF, JPEG, or PNG file.");
       return;
     }
 
@@ -190,7 +191,7 @@ export function DocumentUpload({ onComplete, onBack }: DocumentUploadProps) {
                 <input
                   type="file"
                   id="file-upload"
-                  accept=".jpg,.jpeg,.png"
+                  accept=".pdf,.jpg,.jpeg,.png"
                   onChange={handleChange}
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
@@ -205,7 +206,7 @@ export function DocumentUpload({ onComplete, onBack }: DocumentUploadProps) {
                   </h3>
 
                   <p className="text-sm text-gray-600 mb-4">
-                    Supports JPEG and PNG files up to 10MB
+                    Supports PDF, JPEG, and PNG files up to 10MB
                   </p>
 
                   <Button

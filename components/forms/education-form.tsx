@@ -7,8 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trash2, Plus } from "lucide-react";
+import { Trash2, Plus, CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 export function EducationForm() {
   const { resumeData, addEducation, updateEducation, deleteEducation } =
@@ -190,15 +194,37 @@ export function EducationForm() {
               >
                 Start Date <span className="text-red-500 text-xs">*</span>
               </Label>
-              <Input
-                id="edu-startDate"
-                type="month"
-                value={formData.startDate}
-                onChange={(e) =>
-                  setFormData({ ...formData, startDate: e.target.value })
-                }
-                required
-              />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !formData.startDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {formData.startDate ? (
+                      format(new Date(formData.startDate), "PPP")
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={formData.startDate ? new Date(formData.startDate) : undefined}
+                    onSelect={(date) =>
+                      setFormData({ 
+                        ...formData, 
+                        startDate: date ? format(date, "yyyy-MM-dd") : "" 
+                      })
+                    }
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
             <div className="space-y-2.5">
               <Label
@@ -207,15 +233,37 @@ export function EducationForm() {
               >
                 End Date <span className="text-red-500 text-xs">*</span>
               </Label>
-              <Input
-                id="edu-endDate"
-                type="month"
-                value={formData.endDate}
-                onChange={(e) =>
-                  setFormData({ ...formData, endDate: e.target.value })
-                }
-                required
-              />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !formData.endDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {formData.endDate ? (
+                      format(new Date(formData.endDate), "PPP")
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={formData.endDate ? new Date(formData.endDate) : undefined}
+                    onSelect={(date) =>
+                      setFormData({ 
+                        ...formData, 
+                        endDate: date ? format(date, "yyyy-MM-dd") : "" 
+                      })
+                    }
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
         </div>

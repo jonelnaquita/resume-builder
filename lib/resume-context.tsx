@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import {
   ResumeData,
   PersonalInfo,
@@ -51,8 +51,30 @@ const defaultResumeData: ResumeData = {
 
 const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
 
+const STORAGE_KEY = "resume-builder-data";
+
 export function ResumeProvider({ children }: { children: ReactNode }) {
-  const [resumeData, setResumeData] = useState<ResumeData>(defaultResumeData);
+  // Initialize state from sessionStorage if available
+  const [resumeData, setResumeData] = useState<ResumeData>(() => {
+    if (typeof window !== "undefined") {
+      const stored = sessionStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          return JSON.parse(stored);
+        } catch (e) {
+          console.error("Failed to parse stored resume data:", e);
+        }
+      }
+    }
+    return defaultResumeData;
+  });
+
+  // Save to sessionStorage whenever resumeData changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(resumeData));
+    }
+  }, [resumeData]);
 
   const updatePersonalInfo = (info: PersonalInfo) => {
     setResumeData((prev) => ({ ...prev, personalInfo: info }));

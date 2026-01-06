@@ -8,9 +8,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { AIEnhanceButton } from "@/components/ui/ai-enhance-button";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trash2, Plus } from "lucide-react";
+import { Trash2, Plus, CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 export function ExperienceForm() {
   const { resumeData, addExperience, updateExperience, deleteExperience } =
@@ -142,30 +146,75 @@ export function ExperienceForm() {
               <Label htmlFor="startDate" className="text-sm font-medium text-gray-700">
                 Start Date <span className="text-red-500 text-xs">*</span>
               </Label>
-              <Input
-                id="startDate"
-                type="month"
-                value={formData.startDate}
-                onChange={(e) =>
-                  setFormData({ ...formData, startDate: e.target.value })
-                }
-                required
-              />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !formData.startDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {formData.startDate ? (
+                      format(new Date(formData.startDate), "PPP")
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={formData.startDate ? new Date(formData.startDate) : undefined}
+                    onSelect={(date) =>
+                      setFormData({ 
+                        ...formData, 
+                        startDate: date ? format(date, "yyyy-MM-dd") : "" 
+                      })
+                    }
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
             <div className="space-y-2.5">
               <Label htmlFor="endDate" className="text-sm font-medium text-gray-700">
                 End Date {formData.current && <span className="text-xs text-gray-500">(Current Position)</span>}
               </Label>
-              <Input
-                id="endDate"
-                type="month"
-                value={formData.endDate}
-                onChange={(e) =>
-                  setFormData({ ...formData, endDate: e.target.value })
-                }
-                disabled={formData.current}
-                className={formData.current ? "opacity-50" : ""}
-              />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    disabled={formData.current}
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !formData.endDate && "text-muted-foreground",
+                      formData.current && "opacity-50 cursor-not-allowed"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {formData.endDate ? (
+                      format(new Date(formData.endDate), "PPP")
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={formData.endDate ? new Date(formData.endDate) : undefined}
+                    onSelect={(date) =>
+                      setFormData({ 
+                        ...formData, 
+                        endDate: date ? format(date, "yyyy-MM-dd") : "" 
+                      })
+                    }
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
           <div className="flex items-center gap-3 p-3 bg-white/60 rounded-lg border border-purple-200/50">
