@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trash2, Plus } from "lucide-react";
+import { Trash2, Plus, Award, ExternalLink } from "lucide-react";
 
 export function CertificationsForm() {
   const {
@@ -63,61 +63,95 @@ export function CertificationsForm() {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
-      className="space-y-6"
+      className="space-y-8"
     >
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="certName">Certification Name *</Label>
-          <Input
-            id="certName"
-            placeholder="AWS Certified Solutions Architect"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            required
-          />
+      <div className="space-y-2">
+        <h3 className="text-xl font-bold text-gray-900 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-2">
+          <Award className="w-6 h-6 text-blue-600" />
+          Certifications & Licenses
+        </h3>
+        <p className="text-sm text-gray-600 leading-relaxed">
+          Highlight your professional certifications and credentials
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Certification Details Card */}
+        <div className="bg-gradient-to-br from-blue-50/50 to-indigo-50/30 rounded-xl p-6 border border-blue-100 space-y-5">
+          <h4 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+            Certification Details
+          </h4>
+          <div className="space-y-2.5">
+            <Label htmlFor="certName" className="text-sm font-medium text-gray-700">
+              Certification Name <span className="text-red-500 text-xs">*</span>
+            </Label>
+            <Input
+              id="certName"
+              placeholder="e.g. AWS Certified Solutions Architect - Professional"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              required
+            />
+          </div>
+          <div className="space-y-2.5">
+            <Label htmlFor="issuer" className="text-sm font-medium text-gray-700">
+              Issuing Organization <span className="text-red-500 text-xs">*</span>
+            </Label>
+            <Input
+              id="issuer"
+              placeholder="e.g. Amazon Web Services (AWS)"
+              value={formData.issuer}
+              onChange={(e) =>
+                setFormData({ ...formData, issuer: e.target.value })
+              }
+              required
+            />
+          </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="issuer">Issuing Organization *</Label>
-          <Input
-            id="issuer"
-            placeholder="Amazon Web Services"
-            value={formData.issuer}
-            onChange={(e) =>
-              setFormData({ ...formData, issuer: e.target.value })
-            }
-            required
-          />
+        {/* Date & Credential Card */}
+        <div className="bg-gradient-to-br from-green-50/50 to-teal-50/30 rounded-xl p-6 border border-green-100 space-y-5">
+          <h4 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+            Date & Verification
+          </h4>
+          <div className="space-y-2.5">
+            <Label htmlFor="certDate" className="text-sm font-medium text-gray-700">
+              Issue Date <span className="text-red-500 text-xs">*</span>
+            </Label>
+            <Input
+              id="certDate"
+              type="month"
+              value={formData.date}
+              onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              required
+            />
+          </div>
+          <div className="space-y-2.5">
+            <Label htmlFor="certLink" className="text-sm font-medium text-gray-700 flex items-center gap-1.5">
+              <ExternalLink className="w-3.5 h-3.5" />
+              Credential Link <span className="text-xs text-gray-500">(Optional)</span>
+            </Label>
+            <Input
+              id="certLink"
+              placeholder="e.g. https://www.credly.com/badges/..."
+              value={formData.link || ""}
+              onChange={(e) => setFormData({ ...formData, link: e.target.value })}
+            />
+          </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="certDate">Issue Date *</Label>
-          <Input
-            id="certDate"
-            type="month"
-            value={formData.date}
-            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-            required
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="certLink">Credential Link (Optional)</Label>
-          <Input
-            id="certLink"
-            placeholder="https://www.credly.com/badges/..."
-            value={formData.link || ""}
-            onChange={(e) => setFormData({ ...formData, link: e.target.value })}
-          />
-        </div>
-
-        <div className="flex gap-2">
-          <Button type="submit" className="flex-1">
-            <Plus className="w-4 h-4 mr-2" />
-            {editingId ? "Update" : "Add"} Certification
+        <div className="flex gap-3 pt-2">
+          <Button
+            type="submit"
+            className="flex-1 h-12 text-base font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all"
+          >
+            <Plus className="w-5 h-5 mr-2" />
+            {editingId ? "Update Certification" : "Add Certification"}
           </Button>
           {editingId && (
-            <Button type="button" variant="outline" onClick={resetForm}>
+            <Button type="button" variant="outline" onClick={resetForm} className="h-12 px-6">
               Cancel
             </Button>
           )}
@@ -130,11 +164,15 @@ export function CertificationsForm() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="space-y-3"
+            className="space-y-4"
           >
-            <h3 className="text-sm font-semibold text-muted-foreground">
-              Added Certifications
-            </h3>
+            <div className="flex items-center gap-2">
+              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+              <h3 className="text-sm font-semibold text-gray-600">
+                Your Certifications ({resumeData.certifications.length})
+              </h3>
+              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent"></div>
+            </div>
             {resumeData.certifications.map((cert) => (
               <motion.div
                 key={cert.id}
@@ -143,15 +181,27 @@ export function CertificationsForm() {
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ duration: 0.2 }}
               >
-                <Card>
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-base flex items-center justify-between">
-                      <span>{cert.name}</span>
-                      <div className="flex gap-2">
+                <Card className="border-2 hover:border-green-300 hover:shadow-lg transition-all duration-200">
+                  <CardHeader className="pb-3 bg-gradient-to-br from-gray-50 to-green-50/30">
+                    <CardTitle className="text-base flex items-center justify-between gap-3">
+                      <div className="flex-1">
+                        <div className="font-bold text-gray-900 flex items-center gap-2">
+                          <Award className="w-4 h-4 text-green-600" />
+                          {cert.name}
+                          {cert.link && (
+                            <ExternalLink className="w-3.5 h-3.5 text-blue-600" />
+                          )}
+                        </div>
+                        <div className="text-sm font-normal text-green-700 mt-1">
+                          {cert.issuer}
+                        </div>
+                      </div>
+                      <div className="flex gap-1">
                         <Button
                           size="sm"
                           variant="ghost"
                           onClick={() => handleEdit(cert)}
+                          className="hover:bg-green-100 hover:text-green-700 transition-colors"
                         >
                           Edit
                         </Button>
@@ -159,16 +209,17 @@ export function CertificationsForm() {
                           size="sm"
                           variant="ghost"
                           onClick={() => handleDelete(cert.id)}
+                          className="hover:bg-red-100 hover:text-red-700 transition-colors"
                         >
-                          <Trash2 className="w-4 h-4 text-destructive" />
+                          <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
                     </CardTitle>
                   </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground">
-                      {cert.issuer} • {cert.date}
-                    </p>
+                  <CardContent className="pt-3">
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <span className="font-medium">Issued: {cert.date}</span>
+                    </div>
                   </CardContent>
                 </Card>
               </motion.div>

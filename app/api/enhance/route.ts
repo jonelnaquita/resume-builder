@@ -1,7 +1,9 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import OpenAI from "openai";
 import { NextRequest, NextResponse } from "next/server";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY || "",
+});
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,8 +15,6 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     let prompt = "";
 
@@ -37,9 +37,28 @@ ${context ? `Job context: ${context}\n\n` : ""}Original description:
 ${text}`;
     }
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const enhancedText = response.text().trim();
+    // Call OpenAI GPT-4o-mini for text enhancement
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: "You are a professional resume writer who helps enhance resume content.",
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      temperature: 0.7,
+      max_tokens: 500,
+    });
+
+    const enhancedText = completion.choices[0]?.message?.content?.trim() || "";
+
+    if (!enhancedText) {
+      throw new Error("No response from OpenAI");
+    }
 
     return NextResponse.json({ enhancedText });
   } catch (error) {

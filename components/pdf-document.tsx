@@ -16,10 +16,22 @@ Font.register({
     {
       src: "/font/LibreBaskerville-Regular.ttf",
       fontWeight: 400,
+      fontStyle: "normal",
+    },
+    {
+      src: "/font/LibreBaskerville-Italic.ttf",
+      fontWeight: 400,
+      fontStyle: "italic",
     },
     {
       src: "/font/LibreBaskerville-Bold.ttf",
       fontWeight: 700,
+      fontStyle: "normal",
+    },
+    {
+      src: "/font/LibreBaskerville-BoldItalic.ttf",
+      fontWeight: 700,
+      fontStyle: "italic",
     },
   ],
 });

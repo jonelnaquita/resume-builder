@@ -29,6 +29,7 @@ interface ResumeContextType {
   addCertification: (cert: Certification) => void;
   updateCertification: (id: string, cert: Certification) => void;
   deleteCertification: (id: string) => void;
+  loadResumeData: (data: ResumeData) => void;
 }
 
 const defaultResumeData: ResumeData = {
@@ -162,6 +163,10 @@ export function ResumeProvider({ children }: { children: ReactNode }) {
     }));
   };
 
+  const loadResumeData = (data: ResumeData) => {
+    setResumeData(data);
+  };
+
   return (
     <ResumeContext.Provider
       value={{
@@ -182,6 +187,7 @@ export function ResumeProvider({ children }: { children: ReactNode }) {
         addCertification,
         updateCertification,
         deleteCertification,
+        loadResumeData,
       }}
     >
       {children}

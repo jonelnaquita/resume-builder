@@ -11,14 +11,19 @@ import { EducationForm } from "@/components/forms/education-form";
 import { SkillsForm } from "@/components/forms/skills-form";
 import { ProjectsForm } from "@/components/forms/projects-form";
 import { CertificationsForm } from "@/components/forms/certifications-form";
+import { InitialSelection } from "@/components/initial-selection";
+import { DocumentUpload } from "@/components/document-upload";
 import { exportToPDF } from "@/lib/pdf-export";
 import { Download, FileText, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Footer } from "@/components/footer";
 
+type AppMode = "selection" | "manual" | "document" | "builder";
+
 function ResumeBuilderContent() {
   const resumeRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [appMode, setAppMode] = useState<AppMode>("selection");
   const { resumeData } = useResume();
 
   const handleDownloadPDF = async () => {
@@ -32,6 +37,38 @@ function ResumeBuilderContent() {
     }
   };
 
+  const handleModeSelect = (mode: "manual" | "document") => {
+    if (mode === "manual") {
+      setAppMode("builder");
+    } else {
+      setAppMode("document");
+    }
+  };
+
+  const handleDocumentComplete = () => {
+    setAppMode("builder");
+  };
+
+  const handleBackToSelection = () => {
+    setAppMode("selection");
+  };
+
+  // Show initial selection screen
+  if (appMode === "selection") {
+    return <InitialSelection onSelectMode={handleModeSelect} />;
+  }
+
+  // Show document upload screen
+  if (appMode === "document") {
+    return (
+      <DocumentUpload
+        onComplete={handleDocumentComplete}
+        onBack={handleBackToSelection}
+      />
+    );
+  }
+
+  // Show resume builder (manual or after document upload)
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50/30 via-purple-50/20 to-pink-50/30 flex flex-col">
       {/* Header */}
@@ -39,34 +76,40 @@ function ResumeBuilderContent() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="bg-white border-b border-gray-200 sticky top-0 z-50 no-print"
+        className="sticky top-0 z-50 no-print backdrop-blur-md bg-white/80"
       >
-        <div className="container mx-auto px-6 py-5 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
-              <FileText className="w-6 h-6 text-white" />
+        <div className="container mx-auto px-6 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <FileText className="w-7 h-7 text-blue-600" />
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  Resume Builder
+                </h1>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  Create your professional resume
+                </p>
+              </div>
             </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Resume Builder
-            </h1>
+            <Button
+              onClick={handleDownloadPDF}
+              disabled={isDownloading}
+              size="lg"
+              className="gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/30 transition-all hover:shadow-xl hover:shadow-blue-600/40 disabled:opacity-50"
+            >
+              {isDownloading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <Download className="w-4 h-4" />
+                  Download PDF
+                </>
+              )}
+            </Button>
           </div>
-          <Button
-            onClick={handleDownloadPDF}
-            disabled={isDownloading}
-            className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-colors disabled:opacity-50"
-          >
-            {isDownloading ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Generating...
-              </>
-            ) : (
-              <>
-                <Download className="w-4 h-4" />
-                Download PDF
-              </>
-            )}
-          </Button>
         </div>
       </motion.header>
 
