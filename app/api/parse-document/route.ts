@@ -1,5 +1,7 @@
 import OpenAI from "openai";
 import { NextRequest, NextResponse } from "next/server";
+// @ts-ignore - pdf-parse-fork doesn't have TypeScript types
+const pdfParse = require("pdf-parse-fork");
 
 // Configure fetch to bypass SSL in development
 // @ts-ignore - NODE_TLS_REJECT_UNAUTHORIZED is a valid Node.js env var
@@ -34,7 +36,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const prompt = `You are a professional resume parser. Analyze the provided resume document (PDF or image) and extract ALL information in a structured JSON format.
+    const prompt = `You are a professional resume parser. Analyze the provided resume document and extract ALL information in a structured JSON format.
 
 IMPORTANT INSTRUCTIONS:
 1. Extract ALL text content from the resume accurately
@@ -110,35 +112,71 @@ Return the data in this EXACT JSON structure:
 
 Now analyze the resume and extract all information:`;
 
-    // Use the base64 data URL directly for images (JPEG, PNG)
-    const imageUrl = file;
-
-    // Call GPT-4o-mini with vision capabilities
+    // Call GPT-4o - handle PDF text extraction or use vision for images
     let response;
     try {
-      response = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: [
-          {
-            role: "user",
-            content: [
-              {
-                type: "text",
-                text: prompt,
-              },
-              {
-                type: "image_url",
-                image_url: {
-                  url: imageUrl,
-                  detail: "high", // Use high detail for better text extraction
+      // Check if file type is PDF - need to extract text first
+      if (fileType === "application/pdf") {
+        let pdfText = "";
+        try {
+          // Remove the data URL prefix and get the base64 content
+          const base64Data = file.replace(/^data:application\/pdf;base64,/, "");
+          const pdfBuffer = Buffer.from(base64Data, "base64");
+
+          // Parse PDF to extract text
+          const pdfData = await pdfParse(pdfBuffer);
+          pdfText = pdfData.text;
+
+          if (!pdfText || pdfText.trim().length === 0) {
+            throw new Error("No text could be extracted from the PDF");
+          }
+        } catch (pdfError) {
+          console.error("PDF parsing error:", pdfError);
+          throw new Error(
+            "Failed to extract text from PDF. Please ensure the PDF contains text (not just images) or try uploading an image file instead."
+          );
+        }
+
+        // Use text-based completion for PDF
+        response = await openai.chat.completions.create({
+          model: "gpt-4o-mini",
+          messages: [
+            {
+              role: "user",
+              content: `${prompt}\n\nResume text:\n${pdfText}`,
+            },
+          ],
+          max_tokens: 4096,
+          temperature: 0.1,
+        });
+      } else {
+        // Use vision API for images (JPEG, PNG)
+        const imageUrl = file;
+
+        response = await openai.chat.completions.create({
+          model: "gpt-4o-mini",
+          messages: [
+            {
+              role: "user",
+              content: [
+                {
+                  type: "text",
+                  text: prompt,
                 },
-              },
-            ],
-          },
-        ],
-        max_tokens: 4096,
-        temperature: 0.1, // Low temperature for more consistent extraction
-      });
+                {
+                  type: "image_url",
+                  image_url: {
+                    url: imageUrl,
+                    detail: "high", // Use high detail for better text extraction
+                  },
+                },
+              ],
+            },
+          ],
+          max_tokens: 4096,
+          temperature: 0.1, // Low temperature for more consistent extraction
+        });
+      }
     } catch (apiError: any) {
       console.error("OpenAI API error:", {
         message: apiError?.message,
@@ -188,7 +226,7 @@ Now analyze the resume and extract all information:`;
       // Generic API error
       return NextResponse.json(
         {
-          error: "Please import JPEG or PNG file for best results.",
+          error: "Failed to parse document. Please try uploading a PDF, JPEG, or PNG file.",
           details: apiError?.message || "Unknown API error",
         },
         { status: 500 }
